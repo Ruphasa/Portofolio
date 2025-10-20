@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Github, Linkedin, Mail, Phone, ExternalLink, Code2, Briefcase, GraduationCap, Award, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,20 +6,20 @@ import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("hero");
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set(["hero"]));
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["hero", "about", "skills", "projects", "education", "contact"];
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
         if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
-
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
             break;
           }
         }
@@ -28,6 +28,39 @@ const Index = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const sectionId = entry.target.id;
+          setVisibleSections((prev) => {
+            const newSet = new Set(prev);
+            if (entry.isIntersecting) {
+              newSet.add(sectionId);
+            } else {
+              newSet.delete(sectionId);
+            }
+            return newSet;
+          });
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px" }
+    );
+
+    const sections = document.querySelectorAll(".snap-section");
+    sections.forEach((section) => {
+      if (observerRef.current) {
+        observerRef.current.observe(section);
+      }
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -159,7 +192,7 @@ const Index = () => {
       {/* About Section */}
       <section id="about" className="h-screen snap-section flex items-center relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-        <div className="container mx-auto px-4 z-10 relative">
+        <div className={`container mx-auto px-4 z-10 relative transition-all duration-1000 ${visibleSections.has("about") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Code2 className="w-10 h-10 text-primary" />
@@ -188,7 +221,7 @@ const Index = () => {
 
       {/* Skills Section */}
       <section id="skills" className="h-screen snap-section flex items-center bg-card/30">
-        <div className="container mx-auto px-4">
+        <div className={`container mx-auto px-4 transition-all duration-1000 ${visibleSections.has("skills") ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Briefcase className="w-10 h-10 text-secondary" />
@@ -248,7 +281,7 @@ const Index = () => {
       {/* Projects Section */}
       <section id="projects" className="h-screen snap-section flex items-center relative overflow-y-auto">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
-        <div className="container mx-auto px-4 z-10 relative">
+        <div className={`container mx-auto px-4 z-10 relative transition-all duration-1000 ${visibleSections.has("projects") ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Code2 className="w-10 h-10 text-primary" />
@@ -300,7 +333,7 @@ const Index = () => {
 
       {/* Education & Achievements Section */}
       <section id="education" className="h-screen snap-section flex items-center bg-card/30">
-        <div className="container mx-auto px-4">
+        <div className={`container mx-auto px-4 transition-all duration-1000 ${visibleSections.has("education") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <GraduationCap className="w-10 h-10 text-secondary" />
@@ -358,7 +391,7 @@ const Index = () => {
       {/* Contact Section */}
       <section id="contact" className="h-screen snap-section flex items-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-        <div className="container mx-auto px-4 z-10 relative">
+        <div className={`container mx-auto px-4 z-10 relative transition-all duration-1000 ${visibleSections.has("contact") ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}>
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center gap-4 mb-12">
               <div className="flex-1 h-1 bg-gradient-to-r from-transparent to-primary" />
