@@ -104,6 +104,14 @@ export default {
           "0%": { transform: "translateX(-100%) skewX(-15deg)", opacity: "0" },
           "100%": { transform: "translateX(0) skewX(0)", opacity: "1" },
         },
+        "parallax-up": {
+          "0%": { transform: "translateY(100px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "zoom-in": {
+          "0%": { transform: "scale(0.8)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,6 +124,8 @@ export default {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "text-shimmer": "text-shimmer 3s linear infinite",
         "persona-slide": "persona-slide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "parallax-up": "parallax-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "zoom-in": "zoom-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
       },
     },
   },

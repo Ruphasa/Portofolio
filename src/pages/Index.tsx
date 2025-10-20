@@ -74,7 +74,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="bg-background text-foreground">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-primary/20">
         <div className="container mx-auto px-4 py-4">
@@ -104,7 +104,7 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+      <section id="hero" className="h-screen snap-section flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
@@ -157,7 +157,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 relative">
+      <section id="about" className="h-screen snap-section flex items-center relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
         <div className="container mx-auto px-4 z-10 relative">
           <div className="max-w-4xl mx-auto">
@@ -187,7 +187,7 @@ const Index = () => {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-24 bg-card/30">
+      <section id="skills" className="h-screen snap-section flex items-center bg-card/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
@@ -246,7 +246,7 @@ const Index = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-24 relative">
+      <section id="projects" className="h-screen snap-section flex items-center relative overflow-y-auto">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
         <div className="container mx-auto px-4 z-10 relative">
           <div className="max-w-6xl mx-auto">
@@ -299,7 +299,7 @@ const Index = () => {
       </section>
 
       {/* Education & Achievements Section */}
-      <section id="education" className="py-24 bg-card/30">
+      <section id="education" className="h-screen snap-section flex items-center bg-card/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
@@ -356,7 +356,7 @@ const Index = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 relative overflow-hidden">
+      <section id="contact" className="h-screen snap-section flex items-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
         <div className="container mx-auto px-4 z-10 relative">
           <div className="max-w-4xl mx-auto text-center">
