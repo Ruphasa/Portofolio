@@ -142,7 +142,7 @@ const Index = () => {
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
         
-        <div className="container mx-auto px-4 z-10">
+        <div className={`container mx-auto px-4 z-10 ${visibleSections.has("hero") ? "animate-shape-wipe" : ""}`}>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4 animate-shape-wipe">
               <h1 className="text-6xl md:text-8xl font-black tracking-tight">
@@ -190,9 +190,9 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="h-screen snap-section flex items-center relative">
+      <section id="about" className="h-screen snap-section flex items-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-        <div className={`container mx-auto px-4 z-10 relative transition-all duration-1000 ${visibleSections.has("about") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
+        <div className={`container mx-auto px-4 z-10 relative ${visibleSections.has("about") ? "animate-slide-in-diagonal" : "opacity-0"}`}>
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Code2 className="w-10 h-10 text-primary" />
@@ -220,8 +220,8 @@ const Index = () => {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="h-screen snap-section flex items-center bg-card/30">
-        <div className={`container mx-auto px-4 transition-all duration-1000 ${visibleSections.has("skills") ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+      <section id="skills" className="h-screen snap-section flex items-center bg-card/30 overflow-hidden">
+        <div className={`container mx-auto px-4 ${visibleSections.has("skills") ? "animate-zoom-in" : "opacity-0"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Briefcase className="w-10 h-10 text-secondary" />
@@ -281,7 +281,7 @@ const Index = () => {
       {/* Projects Section */}
       <section id="projects" className="h-screen snap-section flex items-center relative overflow-y-auto">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
-        <div className={`container mx-auto px-4 z-10 relative transition-all duration-1000 ${visibleSections.has("projects") ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"}`}>
+        <div className={`container mx-auto px-4 z-10 relative ${visibleSections.has("projects") ? "animate-persona-slide" : "opacity-0"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Code2 className="w-10 h-10 text-primary" />
@@ -332,8 +332,8 @@ const Index = () => {
       </section>
 
       {/* Education & Achievements Section */}
-      <section id="education" className="h-screen snap-section flex items-center bg-card/30">
-        <div className={`container mx-auto px-4 transition-all duration-1000 ${visibleSections.has("education") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
+      <section id="education" className="h-screen snap-section flex items-center bg-card/30 overflow-hidden">
+        <div className={`container mx-auto px-4 ${visibleSections.has("education") ? "animate-parallax-up" : "opacity-0"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <GraduationCap className="w-10 h-10 text-secondary" />
@@ -391,7 +391,7 @@ const Index = () => {
       {/* Contact Section */}
       <section id="contact" className="h-screen snap-section flex items-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-        <div className={`container mx-auto px-4 z-10 relative transition-all duration-1000 ${visibleSections.has("contact") ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}>
+        <div className={`container mx-auto px-4 z-10 relative ${visibleSections.has("contact") ? "animate-shape-wipe" : "opacity-0"}`}>
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center gap-4 mb-12">
               <div className="flex-1 h-1 bg-gradient-to-r from-transparent to-primary" />
