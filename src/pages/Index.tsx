@@ -6,28 +6,54 @@ import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("hero");
+  const activeSectionRef = useRef(activeSection);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set(["hero"]));
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["hero", "about", "skills", "projects", "education", "contact"];
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
+    // keep a ref in sync to avoid adding activeSection to the scroll listener deps
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
 
+  useEffect(() => {
+    // Use a rAF-batched, passive scroll handler to avoid jank and to prevent
+    // the scroll event from blocking rendering. Also avoid setting state when
+    // the active section hasn't changed to reduce re-renders.
+    const sections = ["hero", "about", "skills", "projects", "education", "contact"];
+    let ticking = false;
+    let lastScrollY = 0;
+
+    const updateActiveSection = (scrollY: number) => {
+      const scrollPosition = scrollY + window.innerHeight / 2;
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
         if (element) {
           const { offsetTop, offsetHeight } = element;
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(sectionId);
+            if (sectionId !== activeSectionRef.current) {
+              // Only update when the section actually changed
+              setActiveSection(sectionId);
+            }
             break;
           }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = (ev: Event) => {
+      lastScrollY = window.scrollY;
+      if (!ticking) {
+        ticking = true;
+        // rAF batches updates to avoid layout thrashing
+        requestAnimationFrame(() => {
+          updateActiveSection(lastScrollY);
+          ticking = false;
+        });
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -110,45 +136,45 @@ const Index = () => {
     <div className="bg-background text-foreground relative">
       {/* Navigation removed per user request - layout & snap-scroll preserved */}
 
-      {/* Fixed Background Layer - Applies to all sections */}
-      <div className="fixed inset-0 z-0 overflow-hidden">
-        {/* Animated Background Layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 animate-gradient" 
-             style={{ backgroundSize: "200% 200%" }} />
+   {/* Fixed Background Layer - Applies to all sections */}
+  <div className="fixed inset-0 z-0 overflow-hidden bg-animated">
+     {/* Animated Background Layers */}
+     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 animate-gradient" 
+       style={{ backgroundSize: "200% 200%" }} />
         
-        {/* Morphing Blobs - More Dynamic */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 blur-3xl animate-morph" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 blur-3xl animate-morph" style={{ animationDelay: "2s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent/10 blur-3xl animate-morph" style={{ animationDelay: "4s" }} />
-        <div className="absolute top-10 right-1/3 w-64 h-64 bg-primary/15 blur-3xl animate-morph" style={{ animationDelay: "1s" }} />
-        <div className="absolute bottom-10 left-1/4 w-72 h-72 bg-secondary/15 blur-3xl animate-morph" style={{ animationDelay: "3s" }} />
+     {/* Morphing Blobs - More Dynamic */}
+     <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 blur-3xl animate-morph" />
+     <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 blur-3xl animate-morph" style={{ animationDelay: "2s" }} />
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent/10 blur-3xl animate-morph hidden md:block" style={{ animationDelay: "4s" }} />
+  <div className="absolute top-10 right-1/3 w-64 h-64 bg-primary/15 blur-3xl animate-morph hidden md:block" style={{ animationDelay: "1s" }} />
+  <div className="absolute bottom-10 left-1/4 w-72 h-72 bg-secondary/15 blur-3xl animate-morph hidden md:block" style={{ animationDelay: "3s" }} />
         
-        {/* Floating Particles - Extended */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary rounded-full particle" 
-             style={{ '--tx': '100px', '--ty': '-200px' } as React.CSSProperties} />
-        <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-secondary rounded-full particle" 
-             style={{ '--tx': '-150px', '--ty': '-250px', animationDelay: '2s' } as React.CSSProperties} />
-        <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-accent rounded-full particle" 
-             style={{ '--tx': '200px', '--ty': '-300px', animationDelay: '4s' } as React.CSSProperties} />
-        <div className="absolute top-1/2 right-1/3 w-4 h-4 bg-primary/50 rounded-full particle" 
-             style={{ '--tx': '-100px', '--ty': '-150px', animationDelay: '1s' } as React.CSSProperties} />
-        <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-secondary/50 rounded-full particle" 
-             style={{ '--tx': '150px', '--ty': '-200px', animationDelay: '3s' } as React.CSSProperties} />
-        <div className="absolute top-10 left-1/2 w-2 h-2 bg-accent rounded-full particle" 
-             style={{ '--tx': '-120px', '--ty': '-280px', animationDelay: '1.5s' } as React.CSSProperties} />
-        <div className="absolute bottom-10 right-1/2 w-3 h-3 bg-primary rounded-full particle" 
-             style={{ '--tx': '180px', '--ty': '-320px', animationDelay: '2.5s' } as React.CSSProperties} />
-        <div className="absolute top-1/3 left-1/5 w-2 h-2 bg-secondary rounded-full particle" 
-             style={{ '--tx': '140px', '--ty': '-260px', animationDelay: '3.5s' } as React.CSSProperties} />
-        <div className="absolute bottom-1/4 right-1/5 w-4 h-4 bg-accent/70 rounded-full particle" 
-             style={{ '--tx': '-160px', '--ty': '-240px', animationDelay: '4.5s' } as React.CSSProperties} />
+     {/* Floating Particles - Extended */}
+     <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary rounded-full particle" 
+       style={{ '--tx': '100px', '--ty': '-200px' } as React.CSSProperties} />
+     <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-secondary rounded-full particle" 
+       style={{ '--tx': '-150px', '--ty': '-250px', animationDelay: '2s' } as React.CSSProperties} />
+     <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-accent rounded-full particle" 
+       style={{ '--tx': '200px', '--ty': '-300px', animationDelay: '4s' } as React.CSSProperties} />
+     <div className="absolute top-1/2 right-1/3 w-4 h-4 bg-primary/50 rounded-full particle" 
+       style={{ '--tx': '-100px', '--ty': '-150px', animationDelay: '1s' } as React.CSSProperties} />
+     <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-secondary/50 rounded-full particle" 
+       style={{ '--tx': '150px', '--ty': '-200px', animationDelay: '3s' } as React.CSSProperties} />
+     <div className="absolute top-10 left-1/2 w-2 h-2 bg-accent rounded-full particle" 
+       style={{ '--tx': '-120px', '--ty': '-280px', animationDelay: '1.5s' } as React.CSSProperties} />
+     <div className="absolute bottom-10 right-1/2 w-3 h-3 bg-primary rounded-full particle" 
+       style={{ '--tx': '180px', '--ty': '-320px', animationDelay: '2.5s' } as React.CSSProperties} />
+     <div className="absolute top-1/3 left-1/5 w-2 h-2 bg-secondary rounded-full particle" 
+       style={{ '--tx': '140px', '--ty': '-260px', animationDelay: '3.5s' } as React.CSSProperties} />
+     <div className="absolute bottom-1/4 right-1/5 w-4 h-4 bg-accent/70 rounded-full particle" 
+       style={{ '--tx': '-160px', '--ty': '-240px', animationDelay: '4.5s' } as React.CSSProperties} />
         
-        {/* Glow Rings - More Layers */}
-        <div className="absolute top-40 right-20 w-64 h-64 rounded-full border-2 border-primary/20 animate-rotate-glow" />
-        <div className="absolute bottom-40 left-20 w-80 h-80 rounded-full border-2 border-secondary/20 animate-rotate-glow" style={{ animationDelay: "1.5s" }} />
-        <div className="absolute top-1/3 left-1/3 w-56 h-56 rounded-full border border-accent/20 animate-rotate-glow" style={{ animationDelay: "0.75s" }} />
-        <div className="absolute bottom-1/3 right-1/3 w-72 h-72 rounded-full border border-primary/15 animate-rotate-glow" style={{ animationDelay: "2.25s" }} />
-      </div>
+     {/* Glow Rings - More Layers */}
+     <div className="absolute top-40 right-20 w-64 h-64 rounded-full border-2 border-primary/20 animate-rotate-glow" />
+  <div className="absolute bottom-40 left-20 w-80 h-80 rounded-full border-2 border-secondary/20 animate-rotate-glow hidden md:block" style={{ animationDelay: "1.5s" }} />
+  <div className="absolute top-1/3 left-1/3 w-56 h-56 rounded-full border border-accent/20 animate-rotate-glow hidden md:block" style={{ animationDelay: "0.75s" }} />
+  <div className="absolute bottom-1/3 right-1/3 w-72 h-72 rounded-full border border-primary/15 animate-rotate-glow hidden md:block" style={{ animationDelay: "2.25s" }} />
+   </div>
 
       {/* Hero Section */}
       <section id="hero" className="h-screen snap-section flex items-center justify-center relative z-10">
@@ -302,7 +328,7 @@ const Index = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="h-screen snap-section flex items-center relative overflow-y-auto z-10">
+      <section id="projects" className="h-screen snap-section flex items-center relative z-10">
         <div className={`container mx-auto px-4 relative ${visibleSections.has("projects") ? "animate-persona-slide" : "opacity-0"}`}>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12 group">
@@ -312,12 +338,12 @@ const Index = () => {
               </h2>
               <div className="flex-1 h-1 bg-gradient-to-r from-primary via-accent to-transparent animate-gradient shadow-[0_0_15px_rgba(218,84,108,0.4)]" style={{ backgroundSize: "200% 200%" }} />
             </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
+            {/* Mobile: horizontal scroll with snap; Desktop: 2-column grid */}
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 pb-2 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:snap-none md:mx-0 md:px-0">
               {projects.map((project, index) => (
-                <Card 
+                <Card
                   key={project.title}
-                  className={`bg-card/50 border-primary/20 hover:border-primary/60 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/40 group hover:-translate-y-4 hover:scale-105 cursor-pointer relative overflow-hidden ${visibleSections.has("projects") ? "animate-fade-in-scale" : ""}`}
+                  className={`shrink-0 w-[85%] sm:w-[70%] md:w-auto md:shrink md:min-w-0 snap-start bg-card/50 border-primary/20 hover:border-primary/60 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/40 group hover:-translate-y-4 hover:scale-105 cursor-pointer relative overflow-hidden ${visibleSections.has("projects") ? "animate-fade-in-scale" : ""}`}
                   style={{ animationDelay: `${index * 0.15}s` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-gradient" style={{ backgroundSize: "200% 200%" }} />

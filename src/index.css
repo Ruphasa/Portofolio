@@ -56,18 +56,49 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
   }
 
   html {
     scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
+    /* Disable automatic smooth scrolling for programmatic jumps to avoid
+       perceived delays when user scrolls manually. */
+    scroll-behavior: auto;
   }
   
   .snap-section {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
+    /* Use 'normal' to avoid forcing a full stop which may feel delayed on some
+       input devices; native snapping will still occur. */
+    scroll-snap-stop: normal;
   }
 }
+
+/* Hide scrollbars utility for horizontal scroller (mobile) */
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Mobile performance tuning without changing desktop UI */
+@media (max-width: 768px) {
+  /* Reduce background load on mobile */
+  .bg-animated .particle { display: none; }
+  .bg-animated .blur-3xl { filter: blur(12px); }
+  .animate-rotate-glow { animation-duration: 20s !important; filter: none !important; }
+  .animate-morph { animation-duration: 25s !important; }
+  .animate-gradient { animation-duration: 12s !important; }
+  /* Drop heavy drop-shadows on mobile to reduce paint cost */
+  [class*="drop-shadow"] { filter: none !important; }
+
+  /* Render only visible sections to reduce layout/paint cost while scrolling */
+  .snap-section { content-visibility: auto; contain-intrinsic-size: 100vh; }
+}
+
+/* (Removed perf-lite overrides per user request) */
 
 /* ==================== WUTHERING WAVES INSPIRED ANIMATIONS ==================== */
 
