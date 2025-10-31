@@ -1,11 +1,10 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import path from "path";
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  // Use repo name for GitHub Pages in production, root in local dev
-  base: mode === "development" ? "/" : "/rizqi-fauzan-persona-showcase/",
+// Minimal, friend-like Vite config with correct GitHub Pages base
+export default defineConfig({
+  base: "/rizqi-fauzan-persona-showcase/",
   plugins: [react()],
   resolve: {
     alias: {
@@ -16,4 +15,4 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-}));
+});
