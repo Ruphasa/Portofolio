@@ -4,9 +4,9 @@ import path from "node:path";
 
 // Minimal config like your friend's, plus alias support for "@" imports
 export default defineConfig({
-  // Keep this matching your Pages repo name. If this repo is "Portofolio", this is correct.
-  // If you're deploying this repo (rizqi-fauzan-persona-showcase), set it to "/rizqi-fauzan-persona-showcase/".
-  base: "/Portofolio/",
+  // IMPORTANT: Must match your GitHub Pages project name for correct asset URLs
+  // This repo is "rizqi-fauzan-persona-showcase", so the base should be:
+  base: "/rizqi-fauzan-persona-showcase/",
   plugins: [react()],
   resolve: {
     alias: {
