@@ -8,9 +8,4 @@ export default defineConfig({
   // If you're deploying this repo (rizqi-fauzan-persona-showcase), set it to "/rizqi-fauzan-persona-showcase/".
   base: "/Portofolio/",
   plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "/src"),
-    },
-  },
 });
