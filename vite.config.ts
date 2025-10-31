@@ -4,13 +4,13 @@ import path from "node:path";
 
 // Minimal config like your friend's, plus alias support for "@" imports
 export default defineConfig({
-  // IMPORTANT: Must match your GitHub Pages project name for correct asset URLs
-  // Your GitHub repository is "Portofolio", so the base must be:
+  // Keep this matching your Pages repo name. If this repo is "Portofolio", this is correct.
+  // If you're deploying this repo (rizqi-fauzan-persona-showcase), set it to "/rizqi-fauzan-persona-showcase/".
   base: "/Portofolio/",
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "/src"),
     },
   },
 });
