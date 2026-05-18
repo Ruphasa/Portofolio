@@ -6,6 +6,8 @@ import * as THREE from "three";
 const PROJECTS = [
   { title: "Aemeath", tag: "Bun · Python · Agentic AI · OS Automation", status: "⚠️ In Progress · AI Companion", hook: "An agentic AI companion that automates local OS & device actions securely" },
   { title: "Karaoke Audiobook", tag: "AI Voice Cloning · PDF Parser · Karaoke Sync", status: "⚠️ In Progress", hook: "Convert novel PDFs to multi-character audiobooks presented in karaoke style" },
+  { title: "StudyBuddy", tag: "Flutter · LLM OCR · KNN Classifier · Socratic AI", status: "✅ Shipped", hook: "\"Smart way to study, smart way to grow\" — ML-powered scheduling & VAK learning style detection" },
+  { title: "EcoBite", tag: "Flutter · Node.js · Circular Economy", status: "🟢 Active", hook: "\"Zero waste, maximum taste, better planet\" — Surplus food rescue and farmer organic claim system" },
   { title: "Malang Autism Center App", tag: "Flutter · Laravel · Social Impact", status: "🟢 Active · Pending HAKI", hook: "Built for those who can't speak for themselves" },
   { title: "PresMa", tag: "Laravel · KNN · Naive Bayes · ML", status: "✅ Shipped", hook: "ML-powered achievement tracker" },
   { title: "KELANews", tag: "Laravel · PHP · MySQL", status: "✅ Shipped", hook: "Clean news, zero noise" },
