@@ -355,7 +355,7 @@ const Hero = () => {
           <MagneticButton variant="outline" testId="hero-cta-work" onClick={scrollToProjects}>
             See My Work ↓
           </MagneticButton>
-          <MagneticButton variant="ghost" testId="hero-cta-cv" href="/cv.pdf">
+          <MagneticButton variant="ghost" testId="hero-cta-cv" href={`${import.meta.env.BASE_URL}cv.pdf`}>
             Download CV
           </MagneticButton>
         </motion.div>
