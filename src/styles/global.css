@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --deep-space: #0a0a0f;
+    --cosmic-white: #f0f0ff;
+    --nebula-purple: #7c3aed;
+    --star-gold: #fbbf24;
+    --void-teal: #0d9488;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0a0a0f;
+    color: #f0f0ff;
+    font-family: "Outfit", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* App container */
+.App {
+    min-height: 100vh;
+    background-color: #0a0a0f;
+    color: #f0f0ff;
+}
+
+::selection {
+    background: #7c3aed;
+    color: #f0f0ff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0a0a0f;
+}
+::-webkit-scrollbar-thumb {
+    background: #1a1a25;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+}
+
+/* Star field — generated with multiple radial-gradients */
+.star-field {
+    position: absolute;
+    inset: 0;
+    background-color: #0a0a0f;
+    background-image:
+        radial-gradient(1px 1px at 20px 30px, #f0f0ff, transparent),
+        radial-gradient(1px 1px at 40px 70px, #f0f0ff, transparent),
+        radial-gradient(1px 1px at 50px 160px, rgba(240, 240, 255, 0.7), transparent),
+        radial-gradient(1px 1px at 90px 40px, #f0f0ff, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(240, 240, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 160px 120px, #f0f0ff, transparent),
+        radial-gradient(2px 2px at 200px 60px, #fbbf24, transparent),
+        radial-gradient(1px 1px at 240px 180px, #f0f0ff, transparent),
+        radial-gradient(1px 1px at 280px 30px, rgba(240, 240, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 320px 100px, #f0f0ff, transparent),
+        radial-gradient(2px 2px at 380px 150px, rgba(124, 58, 237, 0.8), transparent),
+        radial-gradient(1px 1px at 420px 80px, #f0f0ff, transparent);
+    background-repeat: repeat;
+    background-size: 450px 250px;
+    animation: twinkle 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.star-field-dense {
+    background-size: 300px 180px;
+    opacity: 0.7;
+    animation-duration: 8s;
+    animation-direction: reverse;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 0.4; }
+}
+
+/* Slow float */
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+}
+.float-slow { animation: float-slow 6s ease-in-out infinite; }
+
+/* Magnetic CTA */
+.magnetic-btn {
+    transition:
+        transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        background-color 250ms ease,
+        color 250ms ease,
+        border-color 250ms ease;
+}
+
+/* Section snap */
+section {
+    position: relative;
+    scroll-snap-align: start;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Font helpers */
+.font-oswald { font-family: "Oswald", sans-serif; letter-spacing: -0.01em; }
+.font-shippori { font-family: "Shippori Mincho", serif; }
+.font-outfit { font-family: "Outfit", sans-serif; }
+.font-newspaper { font-family: "Special Elite", "Georgia", serif; }
+.font-serif-news { font-family: "Georgia", "Times New Roman", serif; }
+
+/* Vertical writing for Japanese tagline */
+.writing-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+/* Newspaper page styling */
+.paper {
+    background-color: #e9e2cf;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.06), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.05), transparent 40%);
+    color: #1a1a14;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.paper-fold::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 49.5%, rgba(0, 0, 0, 0.12) 50%, transparent 50.5%);
+    pointer-events: none;
+}
+
+/* Marquee ticker */
+@keyframes marquee-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+}
+.marquee-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    will-change: transform;
+}
+.marquee-left  { animation: marquee-left  25s linear infinite; }
+.marquee-right { animation: marquee-right 28s linear infinite; }
+.mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+/* Constellation pulse */
+@keyframes star-pulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px #fbbf24); }
+    50% { transform: scale(1.4); filter: drop-shadow(0 0 14px #fbbf24); }
+}
+.star-pulse { animation: star-pulse 2.6s ease-in-out infinite; }
+
+/* Black hole glow */
+.black-hole {
+    background: #000;
+    box-shadow:
+        0 0 0 2px rgba(124, 58, 237, 0.4),
+        0 0 60px 20px rgba(124, 58, 237, 0.35),
+        0 0 140px 60px rgba(124, 58, 237, 0.2),
+        inset 0 0 30px 5px rgba(0, 0, 0, 1);
+}
+
+/* Whale shape (CSS) */
+.whale-body {
+    background: radial-gradient(ellipse at 30% 40%, #0d9488 0%, #134e4a 40%, #0a0a0f 80%);
+    box-shadow:
+        0 0 80px rgba(13, 148, 136, 0.4),
+        inset -40px -10px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* Hide horizontal scroll */
+body::-webkit-scrollbar-corner { background: transparent; }

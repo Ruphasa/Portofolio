@@ -1,0 +1,149 @@
+{
+  "theme": "dark",
+  "archetype": "5 (Jewel & Luxury / Cosmic Horror)",
+  "global_styles": {
+    "colors": {
+      "deep_space_black": "#0a0a0f",
+      "cosmic_white": "#f0f0ff",
+      "nebula_purple": "#7c3aed",
+      "star_gold": "#fbbf24",
+      "void_teal": "#0d9488"
+    },
+    "typography": {
+      "english_heading": "Oswald, sans-serif",
+      "japanese_serif": "Shippori Mincho, serif",
+      "body": "Outfit, sans-serif"
+    },
+    "rules": [
+      "NO generic gradients. NO rainbow colors.",
+      "Max 2-3 colors per section.",
+      "Every section must feel like a different dimension of the same cosmic universe.",
+      "Always include data-testid on interactive elements."
+    ]
+  },
+  "sections": {
+    "hero": {
+      "layout": "Full viewport height, flex center, relative positioning for particles.",
+      "colors_allowed": ["#0a0a0f", "#f0f0ff"],
+      "typography": {
+        "jumbotron_text": "text-[12vw] md:text-[8vw] font-bold uppercase leading-none tracking-tighter text-[#f0f0ff] font-['Oswald']",
+        "japanese_tagline": "absolute top-1/4 right-10 text-2xl md:text-4xl writing-vertical-rl font-['Shippori_Mincho'] text-[#f0f0ff]/50 mix-blend-difference"
+      },
+      "elements": {
+        "particles": "Use tsparticles or pure CSS box-shadow for a minimal starry background.",
+        "ctas": "Two minimalist buttons at the bottom left. 'See My Work' & 'Download CV'. Use 1px border border-[#f0f0ff]/20 hover:bg-[#f0f0ff] hover:text-[#0a0a0f] transition-all duration-300."
+      },
+      "animation": "Parallax scroll effect on the main text (moves slower than background). Reveal animation on load using Framer Motion."
+    },
+    "about": {
+      "layout": "Grid 1 column mobile, 2 columns desktop. Generous padding (py-32 px-8).",
+      "colors_allowed": ["#0a0a0f", "#f0f0ff", "#0d9488"],
+      "left_col": {
+        "description": "Cosmic entity illustration.",
+        "image_url": "https://static.prod-images.emergentagent.com/jobs/582c6470-c938-4394-ad53-271fdddb90df/images/a9174a5952dc124669a5a81b5c7aae44fd2e9208df1cb6ac5b835ddee6a55514.png",
+        "treatment": "Use as background for the left column with mix-blend-screen or overlay with abstract SVG orbital lines (stroke-[#0d9488]/30)."
+      },
+      "right_col": {
+        "description": "Draggable physics chips for bio info.",
+        "label": "私について (Japanese label, top right, font-serif text-[#0d9488])",
+        "chips": [
+          "Fullstack Developer",
+          "PT. INKA",
+          "Polinema",
+          "Malang, Indonesia",
+          "Problem Solver"
+        ],
+        "chip_style": "cursor-grab active:cursor-grabbing px-6 py-3 rounded-full backdrop-blur-md bg-white/5 border border-white/10 text-lg font-['Outfit'] inline-block m-2",
+        "implementation": "Use framer-motion <motion.div drag dragConstraints={parentRef}> for the physics feel."
+      }
+    },
+    "projects": {
+      "layout": "Min-h-screen, flex center, overflow-hidden relative.",
+      "colors_allowed": ["#0a0a0f", "#f0f0ff", "#7c3aed"],
+      "center_element": "A central glowing black hole. width/height 150px rounded-full bg-black shadow-[0_0_100px_40px_rgba(124,58,237,0.3)]. No generic gradients inside, just raw box-shadow outer glow.",
+      "orbiting_cards": {
+        "projects": [
+          "Malang Autism Center App",
+          "PresMa",
+          "KELANews",
+          "SiTaTib"
+        ],
+        "style": "absolute w-64 h-40 flex items-center justify-center p-4 text-center backdrop-blur-xl bg-[#0a0a0f]/60 border border-[#7c3aed]/20 rounded-lg shadow-lg text-sm font-['Outfit']",
+        "animation": "Container wrapper spins 360deg infinitely (duration ~30s). Individual cards counter-spin -360deg so text remains readable (upright). Use Framer Motion."
+      }
+    },
+    "skills": {
+      "layout": "Full width relative canvas, min-h-[80vh]. py-20.",
+      "colors_allowed": ["#0a0a0f", "#f0f0ff", "#fbbf24"],
+      "constellations": {
+        "clusters": [
+          { "name": "Aquila", "role": "Backend" },
+          { "name": "Lyra", "role": "Frontend" },
+          { "name": "Cygnus", "role": "Database" },
+          { "name": "Orion", "role": "Mobile/Tools" },
+          { "name": "Vela", "role": "Emerging Tech" }
+        ],
+        "visual_treatment": "Use inline SVG spanning the container. <circle> for stars (fill-[#fbbf24]), <line> for connections (stroke-[#f0f0ff]/20). Use Framer motion pathLength for drawing the lines on scroll into view.",
+        "interaction": "Hovering a star group increases opacity of its label and makes the star glow (shadow-[0_0_15px_#fbbf24])."
+      }
+    },
+    "awards": {
+      "layout": "Perspective container to give 3D depth. Flex center py-32.",
+      "colors_allowed": ["#0a0a0f", "#f0f0ff", "#fbbf24"],
+      "newspaper": {
+        "title": "THE COSMIC GAZETTE",
+        "content": ["Compsphere 2025 Win", "KMIPN 2025 Win"],
+        "texture_url": "https://static.prod-images.emergentagent.com/jobs/582c6470-c938-4394-ad53-271fdddb90df/images/8b3942cf73382daf2b244507423755fc6c96199729d3be4627ce7398b04f387e.png",
+        "style": "bg-cover bg-center text-[#0a0a0f] p-8 max-w-2xl w-full aspect-[3/4] shadow-[20px_20px_0px_#fbbf24]",
+        "animation": "Flippable 3D effect. Use CSS transform: rotateY() and perspective: 1000px on the parent. Or simple framer-motion 3D rotation on hover/scroll."
+      }
+    },
+    "contact": {
+      "layout": "Relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-32 pb-10",
+      "colors_allowed": ["#0a0a0f", "#f0f0ff", "#0d9488"],
+      "whale_transition": {
+        "description": "Cosmic whale animation that 'swallows' the screen to reveal the form.",
+        "image_url": "https://static.prod-images.emergentagent.com/jobs/582c6470-c938-4394-ad53-271fdddb90df/images/0ff4fda3daf6e0f74d0665953515b0888fb1f116757c25bbcbcf98d62bab6419.png",
+        "animation": "Animate the whale image rising from the bottom edge using Framer Motion on scroll, slightly scaling up to cover the background behind the form."
+      },
+      "form": {
+        "style": "z-10 w-full max-w-md bg-[#0a0a0f]/80 backdrop-blur-md p-8 border border-[#0d9488]/30",
+        "inputs": "Minimalist. bg-transparent border-b border-[#0d9488]/50 focus:border-[#0d9488] focus:outline-none py-2 text-[#f0f0ff]",
+        "button": "mt-8 border border-[#0d9488] px-6 py-2 hover:bg-[#0d9488] hover:text-[#0a0a0f] transition-colors uppercase font-['Oswald'] tracking-wider"
+      },
+      "footer": {
+        "email": "rfrizqifauzan@gmail.com",
+        "links": ["github.com/Ruphasa", "linkedin.com/in/ruphasa"],
+        "japanese_closer": "一緒に作りましょう。 (Let's build together - Font Serif, large, faint in the background)",
+        "style": "mt-20 z-10 text-center flex flex-col gap-4 text-sm text-[#f0f0ff]/60"
+      }
+    }
+  },
+  "media_assets": {
+    "images": [
+      {
+        "id": "cosmic_humanoid",
+        "category": "about_section_illustration",
+        "url": "https://static.prod-images.emergentagent.com/jobs/582c6470-c938-4394-ad53-271fdddb90df/images/a9174a5952dc124669a5a81b5c7aae44fd2e9208df1cb6ac5b835ddee6a55514.png"
+      },
+      {
+        "id": "cosmic_newspaper_texture",
+        "category": "awards_section_background",
+        "url": "https://static.prod-images.emergentagent.com/jobs/582c6470-c938-4394-ad53-271fdddb90df/images/8b3942cf73382daf2b244507423755fc6c96199729d3be4627ce7398b04f387e.png"
+      },
+      {
+        "id": "cosmic_whale",
+        "category": "contact_section_transition",
+        "url": "https://static.prod-images.emergentagent.com/jobs/582c6470-c938-4394-ad53-271fdddb90df/images/0ff4fda3daf6e0f74d0665953515b0888fb1f116757c25bbcbcf98d62bab6419.png"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Use Framer Motion extensively for dragging, orbiting, and scroll-triggered reveals.",
+    "Do NOT use generic gradients anywhere. Use pure solid colors with low opacity borders or heavy box-shadows for glows.",
+    "For typography, import Oswald, Shippori Mincho, and Outfit from Google Fonts.",
+    "Ensure the Projects section uses absolute positioning with mathematical rotation (container spins + card spins inversely) to create the orbit effect.",
+    "For the Skills section, manually plot SVG <circle> and <line> coordinates relative to a viewbox.",
+    "Add 'data-testid' to all buttons, form inputs, and major section containers."
+  ]
+}

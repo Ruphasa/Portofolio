@@ -1,0 +1,147 @@
+---
+// CosmicLoader.astro - High-Fidelity Cosmic Portfolio Preloader
+---
+
+<div id="cosmic-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0f] overflow-hidden transition-all duration-1000 ease-in-out">
+  <!-- Star field for continuity -->
+  <div class="star-field opacity-40 absolute inset-0" aria-hidden="true"></div>
+  
+  <!-- Ambient background glow -->
+  <div class="absolute w-[600px] h-[600px] bg-[#7c3aed]/10 rounded-full blur-[140px] -translate-y-1/4 pointer-events-none"></div>
+  <div class="absolute w-[400px] h-[400px] bg-[#0d9488]/10 rounded-full blur-[120px] translate-y-1/4 pointer-events-none"></div>
+
+  <div class="relative flex flex-col items-center justify-center">
+    <!-- Orbital Rings Spinner -->
+    <div class="relative w-36 h-36 flex items-center justify-center">
+      <!-- Outer Ring (Teal) -->
+      <div class="absolute w-full h-full rounded-full border-2 border-dashed border-[#0d9488]/30 border-t-[#0d9488] animate-[spin_4s_linear_infinite]"></div>
+      <!-- Middle Ring (Purple) -->
+      <div class="absolute w-28 h-28 rounded-full border-2 border-dotted border-[#7c3aed]/20 border-r-[#7c3aed] animate-[spin_3s_linear_infinite_reverse]"></div>
+      <!-- Inner Pulsing Node (Gold) -->
+      <div class="absolute w-4 h-4 bg-[#fbbf24] rounded-full shadow-[0_0_20px_rgba(251,191,36,0.8)] animate-pulse"></div>
+    </div>
+
+    <!-- Digital Progress Readout -->
+    <div class="mt-12 flex flex-col items-center justify-center font-outfit tracking-widest select-none text-center">
+      <div class="flex items-baseline gap-1">
+        <span id="loader-pct" class="text-4xl font-light text-[#f0f0ff] tabular-nums">00</span>
+        <span class="text-sm text-[#fbbf24]/60">%</span>
+      </div>
+      <div class="h-4 mt-2 flex items-center justify-center">
+        <span id="loader-status" class="text-[9px] text-[#0d9488] uppercase font-semibold tracking-[0.4em] opacity-80 transition-all duration-300">
+          INITIALIZING SYSTEM
+        </span>
+      </div>
+    </div>
+    
+    <!-- Micro Tech Decoration Line -->
+    <div class="absolute bottom-[-80px] w-32 h-[1px] bg-gradient-to-r from-transparent via-[#f0f0ff]/10 to-transparent overflow-hidden">
+      <div id="loader-bar" class="w-0 h-full bg-[#fbbf24]/60 transition-all duration-300 ease-out"></div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    const loader = document.getElementById('cosmic-loader');
+    const pctEl = document.getElementById('loader-pct');
+    const statusEl = document.getElementById('loader-status');
+    const barEl = document.getElementById('loader-bar');
+    
+    if (!loader || !pctEl || !statusEl || !barEl) return;
+
+    // Lock scrolling on load
+    document.body.style.overflow = 'hidden';
+
+    // Cinematic timeline constants
+    const TOTAL_COUNT_DURATION = 2500; // Time to count 0-100ms
+    const HOLD_DURATION = 500;         // Time to hold at 100% before exit
+    const START_TIME = performance.now();
+
+    const milestoneStatuses = [
+      { trigger: 0.0, text: "CALIBRATING COSMIC GRAVITY" },
+      { trigger: 0.2, text: "IGNITING NEBULAS" },
+      { trigger: 0.4, text: "STABILIZING SYSTEM ORBITS" },
+      { trigger: 0.6, text: "ESTABLISHING QUANTUM LINK" },
+      { trigger: 0.8, text: "SYNCHRONIZING CORE DATA" }
+    ];
+
+    let currentStatusIdx = -1;
+
+    // Premium cinematic ease: starts slow, speeds up in middle, eases to a precise finish at 100
+    function easeOutQuint(x) {
+      return 1 - Math.pow(1 - x, 5);
+    }
+
+    function updateStatus(normalizedProgress) {
+      // Find the highest milestone index we have reached
+      let targetIdx = -1;
+      for (let i = 0; i < milestoneStatuses.length; i++) {
+        if (normalizedProgress >= milestoneStatuses[i].trigger) {
+          targetIdx = i;
+        }
+      }
+
+      // If a new status is triggered, smoothly crossfade text
+      if (targetIdx !== currentStatusIdx && targetIdx !== -1) {
+        currentStatusIdx = targetIdx;
+        statusEl.style.transform = 'translateY(4px)';
+        statusEl.style.opacity = '0';
+        
+        setTimeout(() => {
+          statusEl.innerText = milestoneStatuses[currentStatusIdx].text;
+          statusEl.style.transform = 'translateY(0)';
+          statusEl.style.opacity = '0.8';
+        }, 150);
+      }
+    }
+
+    function animate(currentTime) {
+      const elapsedTime = currentTime - START_TIME;
+      const progressRaw = Math.min(elapsedTime / TOTAL_COUNT_DURATION, 1);
+      
+      // Apply premium easing to percentage and visual progression
+      const easeProgress = easeOutQuint(progressRaw);
+      const numericVal = Math.floor(easeProgress * 100);
+      
+      // Render values
+      pctEl.innerText = numericVal.toString().padStart(2, '0');
+      barEl.style.width = (easeProgress * 100) + '%';
+      
+      // Check status updates based on raw timeline progression
+      updateStatus(progressRaw);
+
+      if (progressRaw < 1) {
+        // Continue animation loop
+        requestAnimationFrame(animate);
+      } else {
+        // Cinematic Finalizing State reached exactly at 2.5s
+        pctEl.innerText = '100';
+        barEl.style.width = '100%';
+        statusEl.style.color = "#fbbf24";
+        statusEl.innerText = "SYSTEM ONLINE";
+        statusEl.style.opacity = '1';
+
+        // Add slight cinematic impact: pulse core glow
+        const goldCore = loader.querySelector('.shadow-\\[0_0_20px_rgba\\(251\\,191\\,36\\,0\\.8\\)\\]');
+        if (goldCore) goldCore.style.boxShadow = '0 0 40px rgba(251, 191, 36, 1)';
+
+        // Initiate the premium fade-out after the cinematic hold (exactly at ~3.0s mark total)
+        setTimeout(() => {
+          loader.classList.add('opacity-0', 'pointer-events-none');
+          // Elegant physical depth scale-out
+          loader.style.transform = 'scale(1.08)';
+          
+          // Unlock scrolling and clean DOM node
+          setTimeout(() => {
+            document.body.style.overflow = '';
+            loader.style.display = 'none';
+          }, 1000); // Matches transition duration
+        }, HOLD_DURATION);
+      }
+    }
+
+    // Boot animation immediately on next rendering frame
+    requestAnimationFrame(animate);
+  })();
+</script>
