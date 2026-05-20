@@ -4,14 +4,14 @@ import { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import * as THREE from "three";
 
 const PROJECTS = [
-  { title: "Aemeath", tag: "Bun · Python · Agentic AI · OS Automation", status: "⚠️ In Progress · AI Companion", hook: "An agentic AI companion that automates local OS & device actions securely" },
-  { title: "Karaoke Audiobook", tag: "AI Voice Cloning · PDF Parser · Karaoke Sync", status: "⚠️ In Progress", hook: "Convert novel PDFs to multi-character audiobooks presented in karaoke style" },
-  { title: "StudyBuddy", tag: "Flutter · LLM OCR · KNN Classifier · Socratic AI", status: "✅ Shipped", hook: "\"Smart way to study, smart way to grow\" — ML-powered scheduling & VAK learning style detection" },
-  { title: "EcoBite", tag: "Flutter · Node.js · Circular Economy", status: "🟢 Active", hook: "\"Zero waste, maximum taste, better planet\" — Surplus food rescue and farmer organic claim system" },
-  { title: "Malang Autism Center App", tag: "Flutter · Laravel · Social Impact", status: "🟢 Active · Pending HAKI", hook: "Built for those who can't speak for themselves" },
-  { title: "PresMa", tag: "Laravel · KNN · Naive Bayes · ML", status: "✅ Shipped", hook: "ML-powered achievement tracker" },
-  { title: "KELANews", tag: "Laravel · PHP · MySQL", status: "✅ Shipped", hook: "Clean news, zero noise" },
-  { title: "SiTaTib", tag: "Laravel · PHP · MySQL", status: "✅ Shipped", hook: "Discipline, digitized" },
+  { title: "Aemeath", tag: "Bun · Python · Agentic AI · OS Automation", status: "⚠️ In Progress · AI Companion", hook: "An agentic AI companion that automates local OS & device actions securely", github: "https://github.com/ruphasa/aemeath" },
+  { title: "Karaoke Audiobook", tag: "AI Voice Cloning · PDF Parser · Karaoke Sync", status: "⚠️ In Progress", hook: "Convert novel PDFs to multi-character audiobooks presented in karaoke style", github: "https://github.com/ruphasa/karaoke-audiobook" },
+  { title: "StudyBuddy", tag: "Flutter · LLM OCR · KNN Classifier · Socratic AI", status: "✅ Shipped", hook: "\"Smart way to study, smart way to grow\" — ML-powered scheduling & VAK learning style detection", domain: "studybuddyteams.vercel.app", github: "https://github.com/ruphasa/study-buddy" },
+  { title: "EcoBite", tag: "Flutter · Node.js · Circular Economy", status: "🟢 Active", hook: "\"Zero waste, maximum taste, better planet\" — Surplus food rescue and farmer organic claim system", domain: "ecobiteteams.vercel.app", github: "https://github.com/ruphasa/EcoBite" },
+  { title: "Malang Autism Center App", tag: "Flutter · Laravel · Social Impact", status: "🟢 Active · Pending HAKI", hook: "Built for those who can't speak for themselves", github: "https://github.com/ruphasa" },
+  { title: "PresMa", tag: "Laravel · KNN · Naive Bayes · ML", status: "✅ Shipped", hook: "ML-powered achievement tracker", github: "https://github.com/ruphasa/PresMa" },
+  { title: "KELANews", tag: "Laravel · PHP · MySQL", status: "✅ Shipped", hook: "Clean news, zero noise", github: "https://github.com/ruphasa/KELANews" },
+  { title: "SiTaTib", tag: "Laravel · PHP · MySQL", status: "✅ Shipped", hook: "Discipline, digitized", github: "https://github.com/ruphasa/SiTaTib" },
 ];
 
 const ORBIT_RADIUS = 8.2;
@@ -286,7 +286,7 @@ const Planet = ({ project, index, angle, hovered, onEnter, onLeave, occluder }) 
         <meshBasicMaterial color={hovered ? "#fbbf24" : "#0d9488"} transparent opacity={hovered ? 0.3 : 0.1} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       <Html
-        position={[0, 1.4, 0]}
+        position={[0, 0, 0]}
         center
         distanceFactor={12}
         occlude={occluder ? [occluder] : false}
@@ -295,22 +295,172 @@ const Planet = ({ project, index, angle, hovered, onEnter, onLeave, occluder }) 
         <div
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
-          data-testid={`project-card-${index}`}
-          style={{
-            width: 240, padding: "16px 18px", borderRadius: 8,
-            backdropFilter: "blur(16px)",
-            background: hovered ? "rgba(10,10,15,0.95)" : "rgba(10,10,15,0.75)",
-            border: hovered ? "1px solid rgba(251,191,36,0.8)" : "1px solid rgba(13,148,136,0.3)",
-            cursor: "pointer", transition: "all .3s ease",
-            transform: hovered ? "scale(1.05)" : "scale(1)",
-            boxShadow: hovered ? "0 0 24px rgba(251,191,36,0.4)" : "none",
-            pointerEvents: "auto",
-          }}
+          className="relative flex items-center justify-center animate-fade-in"
+          style={{ pointerEvents: "auto" }}
         >
-          <p style={{ fontFamily: '"Outfit",sans-serif', fontSize: 9, textTransform: "uppercase", letterSpacing: "0.3em", color: "#0d9488", marginBottom: 6 }}>{project.status}</p>
-          <h3 style={{ fontFamily: '"Oswald",sans-serif', fontSize: 17, textTransform: "uppercase", color: "#f0f0ff", marginBottom: 6, lineHeight: 1.2 }}>{project.title}</h3>
-          <p style={{ fontFamily: '"Outfit",sans-serif', fontSize: 11, color: "rgba(240,240,255,0.55)", marginBottom: 10 }}>{project.tag}</p>
-          <p style={{ fontFamily: '"Shippori Mincho",serif', fontStyle: "italic", fontSize: 12, color: "rgba(240,240,255,0.75)", borderLeft: "2px solid rgba(13,148,136,0.4)", paddingLeft: 10 }}>&ldquo;{project.hook}&rdquo;</p>
+          {/* Circular Badge showing Favicon or GitHub */}
+          <div
+            style={{
+              width: "44px",
+              height: "44px",
+              borderRadius: "50%",
+              background: hovered ? "rgba(124, 58, 237, 0.25)" : "rgba(10, 10, 15, 0.8)",
+              backdropFilter: "blur(12px)",
+              border: hovered ? "2px solid #fbbf24" : "1.5px solid rgba(13, 148, 136, 0.5)",
+              boxShadow: hovered ? "0 0 20px rgba(251, 191, 36, 0.5)" : "0 0 10px rgba(13, 148, 136, 0.2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)",
+              transform: hovered ? "scale(1.15)" : "scale(1)",
+            }}
+          >
+            {project.domain ? (
+              <img 
+                src={`https://icons.duckduckgo.com/ip3/${project.domain}.ico`}
+                alt={`${project.title} favicon`}
+                style={{
+                  width: "22px",
+                  height: "22px",
+                  borderRadius: "4px",
+                  filter: hovered ? "none" : "grayscale(20%)",
+                  transition: "all 0.3s ease",
+                }}
+                onError={(e) => {
+                  e.target.src = "https://cdn.simpleicons.org/github/ffffff";
+                }}
+              />
+            ) : (
+              <img 
+                src="https://cdn.simpleicons.org/github/ffffff"
+                alt="GitHub"
+                style={{
+                  width: "22px",
+                  height: "22px",
+                  transition: "all 0.3s ease",
+                }}
+              />
+            )}
+          </div>
+
+          {/* Absolute Expanding Detail Card on Hover */}
+          <div
+            data-testid={`project-card-${index}`}
+            style={{
+              position: "absolute",
+              bottom: "55px",
+              left: "50%",
+              transform: hovered 
+                ? "translateX(-50%) translateY(0) scale(1)" 
+                : "translateX(-50%) translateY(10px) scale(0.95)",
+              opacity: hovered ? 1 : 0,
+              visibility: hovered ? "visible" : "hidden",
+              pointerEvents: hovered ? "auto" : "none",
+              width: "250px",
+              padding: "16px 18px",
+              borderRadius: "10px",
+              backdropFilter: "blur(20px)",
+              background: "rgba(8, 8, 12, 0.96)",
+              border: "1px solid rgba(251, 191, 36, 0.65)",
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(251, 191, 36, 0.2)",
+              transition: "all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1)",
+              zIndex: 9999,
+            }}
+          >
+            {/* Small Downward Arrow */}
+            <div 
+              style={{
+                position: "absolute",
+                bottom: "-6px",
+                left: "50%",
+                transform: "translateX(-50%) rotate(45deg)",
+                width: "10px",
+                height: "10px",
+                background: "rgba(8, 8, 12, 0.96)",
+                borderRight: "1px solid rgba(251, 191, 36, 0.65)",
+                borderBottom: "1px solid rgba(251, 191, 36, 0.65)",
+              }}
+            />
+
+            <p style={{ 
+              fontFamily: '"Outfit",sans-serif', 
+              fontSize: "9px", 
+              textTransform: "uppercase", 
+              letterSpacing: "0.3em", 
+              color: "#7c3aed",
+              fontWeight: "600",
+              marginBottom: "6px" 
+            }}>
+              {project.status}
+            </p>
+            <h3 style={{ 
+              fontFamily: '"Oswald",sans-serif', 
+              fontSize: "18px", 
+              textTransform: "uppercase", 
+              color: "#f0f0ff", 
+              marginBottom: "6px", 
+              lineHeight: 1.2 
+            }}>
+              {project.title}
+            </h3>
+            <p style={{ 
+              fontFamily: '"Outfit",sans-serif', 
+              fontSize: "11px", 
+              color: "rgba(240,240,255,0.55)", 
+              marginBottom: "10px" 
+            }}>
+              {project.tag}
+            </p>
+            <p style={{ 
+              fontFamily: '"Shippori Mincho",serif', 
+              fontStyle: "italic", 
+              fontSize: "12px", 
+              color: "rgba(240,240,255,0.85)", 
+              borderLeft: "2px solid rgba(124, 58, 237, 0.5)", 
+              paddingLeft: "10px" 
+            }}>
+              &ldquo;{project.hook}&rdquo;
+            </p>
+
+            {/* Launch App / Source Code Button */}
+            <a
+              href={project.domain ? `https://${project.domain}` : (project.github || `https://github.com/ruphasa`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                marginTop: "14px",
+                padding: "8px 12px",
+                borderRadius: "6px",
+                background: "linear-gradient(135deg, #7c3aed 0%, #0d9488 100%)",
+                border: "none",
+                fontFamily: '"Outfit",sans-serif',
+                fontSize: "10px",
+                fontWeight: "600",
+                color: "#ffffff",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(124, 58, 237, 0.3)",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.boxShadow = "0 6px 16px rgba(124, 58, 237, 0.5), 0 0 8px rgba(13, 148, 136, 0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(124, 58, 237, 0.3)";
+              }}
+            >
+              {project.domain ? "Enter Orbit ↗" : "Access Schematics ↗"}
+            </a>
+          </div>
         </div>
       </Html>
     </group>
@@ -412,10 +562,10 @@ const Projects = () => {
     <section id="projects" data-testid="projects-section" className="relative min-h-screen w-full bg-[#0a0a0f] py-24 md:py-32 px-6 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto mb-4 flex items-end justify-between">
         <div>
-          <p className="font-outfit text-[10px] uppercase tracking-[0.5em] text-[#0d9488] mb-3">02 / Constellation of Work</p>
+          <p className="font-outfit text-[10px] uppercase tracking-[0.5em] text-[#7c3aed] mb-3">02 / Constellation of Work</p>
           <h2 className="font-oswald uppercase text-4xl md:text-6xl tracking-tight text-[#f0f0ff]" data-testid="projects-heading">PROJECTS IN ORBIT</h2>
         </div>
-        <span className="hidden md:block font-shippori text-xl text-[#fbbf24]/70">作品</span>
+        <span className="hidden md:block font-shippori text-xl text-[#7c3aed]/70">作品</span>
       </div>
       <div className="relative z-10 w-full" style={{ height: 650 }}>
         <Canvas

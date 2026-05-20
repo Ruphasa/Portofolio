@@ -33,7 +33,7 @@ const TECH_INFO = {
 // viewbox: 1000 x 600
 const CLUSTERS = [
   {
-    name: "Lyra",
+    name: "Frontend",
     role: "Frontend & Interface",
     labelPos: { x: 550, y: 90 },
     stars: [
@@ -53,7 +53,7 @@ const CLUSTERS = [
     ],
   },
   {
-    name: "Cygnus",
+    name: "Backend",
     role: "Backend & Core Systems",
     labelPos: { x: 75, y: 255 },
     stars: [
@@ -75,7 +75,7 @@ const CLUSTERS = [
     ],
   },
   {
-    name: "Aquila",
+    name: "Mobile & IoT",
     role: "Mobile & Core Architecture",
     labelPos: { x: 660, y: 395 },
     stars: [
@@ -326,12 +326,6 @@ const Skills = () => {
             data-testid="skill-tooltip"
           >
             {tooltip.id}
-            <span
-              className="ml-2 text-[10px] uppercase tracking-widest"
-              style={{ color: (TECH_INFO[tooltip.id] || { color: "#ffffff" }).color }}
-            >
-              {tooltip.cluster}
-            </span>
           </div>
         )}
       </div>

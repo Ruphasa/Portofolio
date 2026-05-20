@@ -24,30 +24,23 @@ const WhaleSprite = () => {
   const [currentFrame, setCurrentFrame] = useState(0);
 
   useEffect(() => {
-    let startTime = null;
-    let animationFrameId = null;
-    const duration = 4000; // 4 seconds to match curtain wipe transition
+    const duration = 4500; // 4.5 seconds to match curtain wipe transition
+    const startTime = Date.now();
 
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
       // Calculate current frame index (0 to 191)
       const frame = Math.min(Math.floor(progress * 192), 191);
       setCurrentFrame(frame);
 
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(animate);
+      if (progress >= 1) {
+        clearInterval(timer);
       }
-    };
+    }, 20); // 20ms interval (50 FPS)
 
-    animationFrameId = requestAnimationFrame(animate);
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
+    return () => clearInterval(timer);
   }, []);
 
   // 14x14 grid calculations (14 columns, 14 rows)
@@ -86,28 +79,24 @@ const LoadingScreen = ({ onReveal }) => {
     setStars(generatedStars);
   }, []);
 
-  // Progress simulation
+  // Progress simulation over exactly 2 seconds (2000ms)
   useEffect(() => {
+    const duration = 2000; // 2 seconds
+    const startTime = Date.now();
+
     const timer = setInterval(() => {
-      setProgressWidth((prev) => {
-        if (prev >= 180) {
-          clearInterval(timer);
-          return 180;
-        }
-        
-        // Increment logic:
-        // Fast until 75% (135px of 180px)
-        // Slow down from 135px to 180px
-        const isSlow = prev >= 135;
-        const minStep = isSlow ? 0.2 : 1.0;
-        const maxStep = isSlow ? 1.2 : 3.5;
-        const step = Math.random() * (maxStep - minStep) + minStep;
-        
-        const next = prev + step;
-        return next >= 180 ? 180 : next;
-      });
-    }, 90);
-    
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing: easeOutQuad
+      const width = (progress * (2 - progress)) * 180;
+      setProgressWidth(width);
+
+      if (progress >= 1) {
+        clearInterval(timer);
+      }
+    }, 20); // 20ms interval (50 FPS)
+
     return () => clearInterval(timer);
   }, []);
 
@@ -244,7 +233,7 @@ export default function LoadingIsland({ children }) {
               animate={{ clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%, 125% 50%)' }}
               exit={{ opacity: 0 }}
               transition={{
-                duration: 4,
+                duration: 4.5,
                 ease: [0.76, 0, 0.24, 1]
               }}
               onAnimationComplete={() => setState('complete')}
@@ -260,13 +249,13 @@ export default function LoadingIsland({ children }) {
                 y: '-50%'
               }}
               transition={{
-                duration: 4,
+                duration: 4.5,
                 ease: [0.76, 0, 0.24, 1],
                 // Connect opacity keyframes so it fades at 85% of the path
                 opacity: {
                   times: [0, 0.7, 0.85, 0.95, 1],
                   values: [1, 1, 1, 0, 0],
-                  duration: 4,
+                  duration: 4.5,
                   ease: "linear"
                 }
               }}
